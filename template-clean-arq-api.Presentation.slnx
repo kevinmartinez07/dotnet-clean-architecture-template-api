@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="template-clean-arq-api.Application/template-clean-arq-api.Application.csproj" />
+  <Project Path="template-clean-arq-api.Domain/template-clean-arq-api.Domain.csproj" />
+  <Project Path="template-clean-arq-api.Infrastructure/template-clean-arq-api.Infrastructure.csproj" />
+  <Project Path="template-clean-arq-api.Presentation/template-clean-arq-api.Presentation.csproj" />
+</Solution>
