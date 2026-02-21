@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using template_clean_arq_api.Application.Commons.Constants;
 using template_clean_arq_api.Application.Models;
+using template_clean_arq_api.Domain.Errors;
 
 namespace template_clean_arq_api.Presentation.Middleware
 {
@@ -65,8 +66,8 @@ namespace template_clean_arq_api.Presentation.Middleware
             catch (SecurityTokenException exception)
             {
                 _Logger.LogWarning(exception, $"El token de autorización no es válido {exception.Message ?? ""}.");
-                var statusCode = StatusCode.ExceptionStatusCodeMap.TryGetValue(exception.GetType(), out var code) ? code : HttpStatusCode.InternalServerError;
-                var response = ApiResponse<string>.Failure(ErrorsConstants.Response(ErrorsConstants.Keys.INTERNAL_SERVER_ERROR));
+                var error = DomainErrors.General.Unauthorized("Invalid or expired authentication token.");
+                var response = ApiResponse<string>.Failure(error);
                 string resultJson = JsonSerializer.Serialize(response);
                 context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 context.Response.ContentType = GeneralConstants.Headers.APPLICATION_JSON;
@@ -76,7 +77,8 @@ namespace template_clean_arq_api.Presentation.Middleware
             {
                 _Logger.LogError(exception, $"Error en middleware: {exception.Message ?? exception.InnerException?.Message!}.");
                 var statusCode = StatusCode.ExceptionStatusCodeMap.TryGetValue(exception.GetType(), out var code) ? code : HttpStatusCode.InternalServerError;
-                var response = ApiResponse<string>.Failure(ErrorsConstants.Response(ErrorsConstants.Keys.INTERNAL_SERVER_ERROR));
+                var error = DomainErrors.General.InternalServerError("An unexpected error occurred while processing the request.");
+                var response = ApiResponse<string>.Failure(error);
                 string resultJson = JsonSerializer.Serialize(response);
                 context.Response.StatusCode = (int)statusCode;
                 context.Response.ContentType = GeneralConstants.Headers.APPLICATION_JSON;

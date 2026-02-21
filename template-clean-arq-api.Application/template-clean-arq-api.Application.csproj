@@ -19,6 +19,9 @@
 
   <ItemGroup>
     <Folder Include="Commons\Attributes\" />
+    <Folder Include="UseCases\Users\Commands\Handler\" />
+    <Folder Include="UseCases\Users\Commands\Validations\" />
+    <Folder Include="UseCases\Users\Queries\Validations\" />
   </ItemGroup>
 
 </Project>
